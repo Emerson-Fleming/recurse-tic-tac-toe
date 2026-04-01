@@ -1,85 +1,47 @@
 function game() {
-    var box_0_0 = document.getElementById("0_0");
-    var box_0_1 = document.getElementById("0_1");
-    var box_0_2 = document.getElementById("0_2");
-    var box_1_0 = document.getElementById("1_0");
-    var box_1_1 = document.getElementById("1_1");
-    var box_1_2 = document.getElementById("1_2");
-    var box_2_0 = document.getElementById("2_0");
-    var box_2_1 = document.getElementById("2_1");
-    var box_2_2 = document.getElementById("2_2");
     var board = [
-        [box_0_0, box_0_1, box_0_2],
-        [box_1_0, box_1_1, box_1_2],
-        [box_2_0, box_2_1, box_2_2]
+        [document.getElementById("0_0"), document.getElementById("0_1"), document.getElementById("0_2")],
+        [document.getElementById("1_0"), document.getElementById("1_1"), document.getElementById("1_2")],
+        [document.getElementById("2_0"), document.getElementById("2_1"), document.getElementById("2_2")]
     ];
     const player1 = "X";
     const player2 = "O";
     let currentPlayer = player1;
     let gameOver = false;
 
-    //initialize all boxes to empty
-    for (var i = 0; i < 3; i++) {
-        for (var j = 0; j < 3; j++) {
-            board[i][j].textContent = "";
-        }
-    }
+    var gameStatus = document.getElementById("gameStatus");
 
-    //add event listener to each box
-    for (var i = 0; i < 3; i++) {
-        for (var j = 0; j < 3; j++) {
-            board[i][j].addEventListener("click", handleClick);
-        }
-    }
+    var resetButton = document.getElementById("resetButton");
+    resetButton.addEventListener("click", resetGame);
+
+    initializeGame();
 
     function handleClick(event) {
         var box = event.target;
-        
-        //ignore if game is over or box is already filled
-        if (gameOver || box.textContent !== "") {
+
+        if (box.textContent !== "") {
+            displayStatus("Box already filled! Choose another.");
             return;
         }
 
-        //place the current player's mark
+        if (gameOver) {
+            return;
+        }
+
         box.textContent = currentPlayer;
 
-        //get board state as values for win checking
-        var boardState = getBoardState();
+        setGameStatus();
 
-        //check for a winner
-        var winner = checkWin(boardState);
-        if (winner) {
+        if (checkWin()) {
             gameOver = true;
-            displayResult(winner + " wins!");
             return;
         }
-
-        //check for a draw
-        if (isBoardFull(boardState)) {
-            gameOver = true;
-            displayResult("It's a draw!");
-            return;
-        }
-
-        //switch to the other player
-        currentPlayer = (currentPlayer === player1) ? player2 : player1;
     }
 
-    function getBoardState() {
-        var state = [];
-        for (var i = 0; i < 3; i++) {
-            state[i] = [];
-            for (var j = 0; j < 3; j++) {
-                state[i][j] = board[i][j].textContent;
-            }
-        }
-        return state;
-    }
-
-    function isBoardFull(boardState) {
+    function isBoardFull() {
         for (var i = 0; i < 3; i++) {
             for (var j = 0; j < 3; j++) {
-                if (boardState[i][j] === "") {
+                if (board[i][j].textContent === "") {
                     return false;
                 }
             }
@@ -87,34 +49,65 @@ function game() {
         return true;
     }
 
-    function displayResult(message) {
-        var title = document.getElementById("title");
-        title.textContent = message;
+    function setGameStatus() {
+        currentPlayer = (currentPlayer === player1) ? player2 : player1;
+        if (checkWin()) {
+            displayStatus(checkWin() + " wins!");
+        }
+        else if (isBoardFull()) {
+            displayStatus("It's a draw!");
+        }
+        else if (currentPlayer === player1) {
+            displayStatus("Player 1's turn (X)");
+        } else {
+            displayStatus("Player 2's turn (O)");
+        }
     }
-}
 
-function checkWin(board) {
-    //check rows
-    for (var i = 0; i < 3; i++) {
-        if (board[i][0] === board[i][1] && board[i][1] === board[i][2] && board[i][0] !== "") {
-            return board[i][0];
+    function displayStatus(message) {
+        gameStatus.textContent = message;
+    }
+
+    function initializeGame() {
+        for (var i = 0; i < 3; i++) {
+            for (var j = 0; j < 3; j++) {
+                board[i][j].textContent = "";
+                board[i][j].addEventListener("click", handleClick);
+            }
         }
+        displayStatus("Player 1's turn (X)");
     }
-    //check columns
-    for (var j = 0; j < 3; j++) {
-        if (board[0][j] === board[1][j] && board[1][j] === board[2][j] && board[0][j] !== "") {
-            return board[0][j];
+
+    function checkWin() {
+        //rows
+        for (var i = 0; i < 3; i++) {
+            if (board[i][0].textContent === board[i][1].textContent && board[i][1].textContent === board[i][2].textContent && board[i][0].textContent !== "") {
+                return board[i][0].textContent;
+            }
         }
+        //columns
+        for (var j = 0; j < 3; j++) {
+            if (board[0][j].textContent === board[1][j].textContent && board[1][j].textContent === board[2][j].textContent && board[0][j].textContent !== "") {
+                return board[0][j].textContent;
+            }
+        }
+        //diagonals
+        if (board[0][0].textContent === board[1][1].textContent && board[1][1].textContent === board[2][2].textContent && board[0][0].textContent !== "") {
+            return board[0][0].textContent;
+        }
+        if (board[0][2].textContent === board[1][1].textContent && board[1][1].textContent === board[2][0].textContent && board[0][2].textContent !== "") {
+            return board[0][2].textContent;
+        }
+        if(isBoardFull()) {
+            return true;
+        }
+        return null;
     }
-    //check diagonals
-    if (board[0][0] === board[1][1] && board[1][1] === board[2][2] && board[0][0] !== "") {
-        return board[0][0];
+
+    function resetGame() {
+        gameOver = false;
+        initializeGame();
     }
-    if (board[0][2] === board[1][1] && board[1][1] === board[2][0] && board[0][2] !== "") {
-        return board[0][2];
-    }
-    return null;
 }
-    
 
 game();
