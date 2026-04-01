@@ -1,0 +1,43 @@
+<!--
+Tic Tac Toe game
+
+Before your interview, write a program that lets two humans play a game 
+of Tic Tac Toe. The interface can be terminal-based or a full GUI. 
+Players should be able to take turns making moves, and the program should 
+report the outcome of the game.
+
+During your interview, you'll pair on extending the game in a way of 
+your choosing. For example, you might add support for a computer player 
+to your game, starting with random moves and then making the AI smarter 
+if you have time.
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+
+<body>
+    <div id="game">
+        <h1 id="title" class="w-full text-center text-3xl font-bold underline">Tic Tac Toe</h1>
+        <div id="board" class="grid grid-flow-row grid-cols-3 gap-4 px-10 [&>div]:text-center [&>div]:text-2xl [&>div]:font-bold [&>div]:border [&>div]:border-gray-500 [&>div]:rounded-lg [&>div]:p-4 [&>div]:cursor-pointer [&>div]:hover:bg-gray-200 [&>div]:h-20">
+            <div id="0_0"></div>
+            <div id="0_1"></div>
+            <div id="0_2"></div>
+            <div id="1_0"></div>
+            <div id="1_1"></div>
+            <div id="1_2"></div>
+            <div id="2_0"></div>
+            <div id="2_1"></div>
+            <div id="2_2"></div>
+        </div>
+    </div>
+    <script src="./js/script.js"></script>
+</body>
+
+</html>
