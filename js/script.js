@@ -6,7 +6,7 @@ function game() {
     ];
     const player1 = "X";
     const player2 = "O";
-    let currentPlayer = player1;
+    let currentPlayer;
     let gameOver = false;
 
     var gameStatus = document.getElementById("gameStatus");
@@ -69,6 +69,7 @@ function game() {
     }
 
     function initializeGame() {
+        currentPlayer = player1;
         for (var i = 0; i < 3; i++) {
             for (var j = 0; j < 3; j++) {
                 board[i][j].textContent = "";
