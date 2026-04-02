@@ -54,7 +54,7 @@ function game() {
         if (checkWin()) {
             displayStatus(checkWin() + " wins!");
         }
-        else if (isBoardFull()) {
+        else if (checkWin() === false) {
             displayStatus("It's a draw!");
         }
         else if (currentPlayer === player1) {
@@ -99,7 +99,7 @@ function game() {
             return board[0][2].textContent;
         }
         if(isBoardFull()) {
-            return 'No one';
+            return false;
         }
         return null;
     }
