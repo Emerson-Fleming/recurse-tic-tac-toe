@@ -99,7 +99,7 @@ function game() {
             return board[0][2].textContent;
         }
         if(isBoardFull()) {
-            return true;
+            return 'No one';
         }
         return null;
     }
